@@ -11,6 +11,11 @@ class VideosTableSeeder extends Seeder
      */
     public function run()
     {
-		factory(App\Video::class, 50)->create();
+        factory(App\Video::class, 19)->create();
+        DB::table('videos')->insert([
+           'title'          => 'The Big Lebowsky',
+           'date'           => '1998-06-03 00:00:00',
+           'realisator'     => 'Frères Coen',
+        ]);
     }
 }

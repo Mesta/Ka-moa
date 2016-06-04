@@ -16,11 +16,18 @@ class Video extends Model
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $dates = ['date'];
+
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = ['id', 'title', 'date', 'realisator'];
 
 	public $timestamps = false;
 }
