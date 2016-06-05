@@ -10,12 +10,15 @@ use App\Http\Requests;
 
 use App\Video;
 
+/*
+ * @Resource("Videos")
+ */
 class VideoController extends \App\Http\Controllers\Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the videos.
+     * @Versions({"v1"})
+     * @Get("/videos{?from,to,realisator}")
      */
     public function index(Request $request)
     {
@@ -48,7 +51,10 @@ class VideoController extends \App\Http\Controllers\Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified video.
+     * @Versions({"v1"})
+     *
+     * @Get("/video/id")
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

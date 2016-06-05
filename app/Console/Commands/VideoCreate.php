@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use App\Video;
+
 class VideoCreate extends Command
 {
     /**
@@ -49,12 +51,35 @@ class VideoCreate extends Command
 
         // Get realisator from input
         while($realisator === null){
-            $realisator = $this->ask('Who is the video realisator? (necessary)');
+            $realisator = $this->ask('Who is the video realisator?');
         }
 
         // Get date from input
-        while($date === null){
+        while($date === null || !preg_match('/([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?/', $date)){
             $date = $this->ask('What is release date of the video? (default: today)');
+            if($date === null){
+                $date = date("Y-m-d H:i:s");
+            }
+            else {
+                if(!preg_match('/([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?/', $date)){
+                    $this->info('Expected format: Y-m-d H:i:s');
+                }
+            }
+        }
+
+        $this->info('Given informations');
+        $this->info('Title: ' . $date);
+        $this->info('Realisator: ' . $realisator);
+        $this->info('Date: ' . $date);
+
+        if ($this->confirm('Do you wish to continue? [y|N]')) {
+            $video              = new Video;
+            $video->title       = $title;
+            $video->realisator  = $realisator;
+            $video->date        = $date;
+            if($video->save()) {
+                $this->info('Video saved!');
+            }
         }
     }
 }
