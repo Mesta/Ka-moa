@@ -17,7 +17,9 @@ class VideoController extends \App\Http\Controllers\Controller
 {
     /**
      * Display a listing of the videos.
+     *
      * @Versions({"v1"})
+     *
      * @Get("/videos{?from,to,realisator}")
      */
     public function index(Request $request)
@@ -52,6 +54,7 @@ class VideoController extends \App\Http\Controllers\Controller
 
     /**
      * Display the specified video.
+     *
      * @Versions({"v1"})
      *
      * @Get("/video/id")
