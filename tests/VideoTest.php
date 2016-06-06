@@ -117,4 +117,20 @@ class VideoTest extends TestCase
                 ],
             ]);
     }
+
+    /**
+     * Test video:create command
+     *
+     * @return void
+     */
+    public function testVideoCreate() {
+        Artisan::queue('video:create', [
+            'title'         => 'L\'homme qui murmurait à l\'oreille des cheveaux',
+            'realisator'    => 'Robert Redford',
+            'date'          => '1998-05-15 00:00:00',
+            '--force'       => 'true'
+        ]);
+
+        $this->seeInDatabase('videos', ['title' => 'L\'homme qui murmurait à l\'oreille des cheveaux']);
+    }
 }

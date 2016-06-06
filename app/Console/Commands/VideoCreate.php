@@ -13,7 +13,7 @@ class VideoCreate extends Command
      *
      * @var string
      */
-    protected $signature = 'video:create {title? : Video title}';
+    protected $signature = 'video:create {title? : Video title} {realisator? : Video realisator} {date? : Creation date of video} {--force=false}';
 
     /**
      * The console command description.
@@ -39,36 +39,34 @@ class VideoCreate extends Command
      */
     public function handle()
     {
-        $title      = null;
-        $date       = null;
-        $realisator = null;
-
         // Get title from input or optionnal parameter
         $title = $this->argument('title');
-        while($title === null) {
+        if($title === null) {
             $title = $this->ask('What is the video title?');
         }
 
         // Get realisator from input
-        while($realisator === null){
+        $realisator = $this->argument('realisator');
+        if($realisator === null){
             $realisator = $this->ask('Who is the video realisator?');
         }
 
         // Get date from input
+        $date = $this->argument('date');
         while($date === null || !preg_match('/([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?/', $date)){
-            $date = $this->ask('What is release date of the video?');
-
-            if(!preg_match('/([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?/', $date)){
+            if($date !== null && !preg_match('/([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?/', $date)){
                 $this->info('Expected format: Y-m-d H:i:s');
             }
+            $date = $this->ask('What is release date of the video?');
         }
 
-        $this->info('Given informations');
         $this->info('Title: '       . $date);
         $this->info('Realisator: '  . $realisator);
         $this->info('Date: '        . $date);
 
-        if ($this->confirm('Do you wish to continue? [y|N]')) {
+        $force = $this->option('force');
+
+        if ($force === 'true' || $this->confirm('Do you wish to continue?')) {
             $video              = new Video;
             $video->title       = $title;
             $video->realisator  = $realisator;
